@@ -1,9 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import type React from 'react';
 import { useState } from 'react';
-
+import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -22,21 +21,33 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage(''); // Reset the error message on every attempt
 
     // Here you would typically handle authentication
     // For example: await signIn(email, password)
 
-    console.log('Login attempt with:', { email, password });
+    // Call NextAuth's signIn function
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
 
     // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+
+    setIsLoading(false);
+
+    if (res?.error) {
+      setErrorMessage('Invalid email or password, please try again.');
+    } else {
+      // Redirect on successful login
       router.push(STATIC_PAGES.home);
-    }, 1000);
+    }
   };
 
   return (
@@ -76,6 +87,11 @@ export default function LoginForm() {
                 required
               />
             </div>
+
+            {/* Show error message if credentials are invalid */}
+            {errorMessage && (
+              <div className="mt-2 text-sm text-red-500">{errorMessage}</div>
+            )}
           </CardContent>
           <CardFooter className={'mt-4'}>
             <Button type="submit" className="w-full" disabled={isLoading}>

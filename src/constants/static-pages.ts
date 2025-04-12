@@ -1,5 +1,5 @@
-
 export const STATIC_PAGES = {
-    home: '/',
-    users: '/users',
+  home: '/',
+  users: '/users',
+  login: '/login',
 };

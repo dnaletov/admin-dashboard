@@ -2,8 +2,16 @@ import Link from 'next/link';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { STATIC_PAGES } from '@/constants/static-pages';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
-function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect(STATIC_PAGES.login);
+  }
   return (
     <div>
       <div className={'my-7'}>
@@ -28,5 +36,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;
