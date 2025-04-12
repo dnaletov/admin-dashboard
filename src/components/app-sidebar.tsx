@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { STATIC_PAGES } from '@/constants/static-pages';
+import { LogoutButton } from './ui/logout';
 
 // Menu items.
 const items = [
@@ -52,7 +53,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <LogoutButton />
+      </SidebarFooter>
     </Sidebar>
   );
 }
