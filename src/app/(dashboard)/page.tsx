@@ -4,17 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { STATIC_PAGES } from '@/constants/static-pages';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { redirect } from 'next/navigation';
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
-  const userName = session?.user?.name || 'User';
-
   return (
     <div>
       <div className={'my-7'}>
-        <h1 className={'text-7xl'}>Welcome, {userName}</h1>
+        <h1 className={'text-7xl'}>
+          Welcome, {session?.user?.name} ({session?.user?.email})
+        </h1>
       </div>
       <div>
         <Link href={STATIC_PAGES.users}>
