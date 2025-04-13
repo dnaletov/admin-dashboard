@@ -9,13 +9,12 @@ import { redirect } from 'next/navigation';
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
-    redirect(STATIC_PAGES.login);
-  }
+  const userName = session?.user?.name || 'User';
+
   return (
     <div>
       <div className={'my-7'}>
-        <h1 className={'text-7xl'}>Welcome</h1>
+        <h1 className={'text-7xl'}>Welcome, {userName}</h1>
       </div>
       <div>
         <Link href={STATIC_PAGES.users}>
