@@ -1,4 +1,4 @@
-import { mockUsers } from '@/mocks/mockUsers';
+import { mockUsers } from '@/mocks/mock-users';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
