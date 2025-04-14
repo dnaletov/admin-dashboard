@@ -121,19 +121,6 @@ export default function UsersData() {
             <p className="text-sm text-gray-500">Updated xx minutes ago</p>
           </CardFooter>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Login Trend past 30 days</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <LoginTrendChart
-              data={Object.entries(totalLoginsByDate).map(([date, count]) => ({
-                date,
-                count,
-              }))}
-            />
-          </CardContent>
-        </Card>
       </div>
       <div>
         <Card className="mx-auto w-full max-w-4xl">
@@ -253,6 +240,21 @@ export default function UsersData() {
                   </div>
                 </div>
               ))}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Login Trend past 30 days</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <LoginTrendChart
+                    data={Object.entries(totalLoginsByDate).map(
+                      ([date, count]) => ({
+                        date,
+                        count,
+                      })
+                    )}
+                  />
+                </CardContent>
+              </Card>
             </div>
           </CardContent>
         </Card>
