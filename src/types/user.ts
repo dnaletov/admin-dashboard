@@ -3,7 +3,8 @@ export type User = {
   firstName: string;
   lastName: string;
   email: string;
-  image?: string;
-  role?: string;
-  status?: string;
+  image: string;
+  role: string;
+  status: string;
+  lastActive: string;
 };

@@ -4,12 +4,10 @@ import { getUserActivity } from '@/services/get-user-activity';
 
 export function useUserActivity() {
   const [activity, setActivity] = useState<UserActivity[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getUserActivity().then((data) => {
       setActivity(data);
-      setLoading(false);
     });
   }, []);
 
@@ -28,17 +26,8 @@ export function useUserActivity() {
     0
   );
 
-  const lastActiveUsers = [...activity]
-    .sort(
-      (a, b) =>
-        new Date(b.lastActive).getTime() - new Date(a.lastActive).getTime()
-    )
-    .slice(0, 10);
-
   return {
-    loading,
     totalLast30Days,
     totalLoginsByDate,
-    lastActiveUsers,
   };
 }

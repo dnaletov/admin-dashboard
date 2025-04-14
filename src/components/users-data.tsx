@@ -25,12 +25,15 @@ import { useUsers } from '@/hooks/use-users';
 import { useState } from 'react';
 import { User } from '@/types/user';
 import UserModal from './user-modal';
+import LoginTrendChart from './login-trend-chart';
+import { useUserActivity } from '@/hooks/use-user-activity';
 
 export default function UsersData() {
   const { users, loading, addUser, updateUser, deleteUser } = useUsers();
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const { totalLast30Days, totalLoginsByDate } = useUserActivity();
 
   const handleSave = (userData: Omit<User, 'id'>, id?: number) => {
     if (id) {
@@ -46,6 +49,33 @@ export default function UsersData() {
       .toLowerCase()
       .includes(search.toLowerCase())
   );
+
+  // Step 1: Separate online and offline users from the filtered users
+  const onlineUsers = filteredUsers.filter((user) => user.status === 'online');
+
+  // Step 2: Sort online users by last active time
+  const sortedOnlineUsers = onlineUsers.sort((a, b) => {
+    const aLastActivity = new Date(a.lastActive).getTime();
+    const bLastActivity = new Date(b.lastActive).getTime();
+    return bLastActivity - aLastActivity;
+  });
+
+  // Step 3: Get the offline users and sort them by last active time
+  const offlineUsers = filteredUsers.filter((user) => user.status !== 'online');
+
+  // Sort offline users by last active time
+  const sortedOfflineUsers = offlineUsers.sort((a, b) => {
+    const aLastActivity = new Date(a.lastActive).getTime();
+    const bLastActivity = new Date(b.lastActive).getTime();
+    return bLastActivity - aLastActivity;
+  });
+
+  // Step 4: Combine online and offline users
+  const sortedUsers = [...sortedOnlineUsers, ...sortedOfflineUsers];
+
+  // Step 5: Limit the number of displayed users to 10
+  const displayedUsers =
+    sortedUsers.length >= 10 ? sortedUsers.slice(0, 10) : sortedUsers;
 
   if (loading) return <p className="mt-10 text-center">Loading users...</p>;
 
@@ -85,11 +115,24 @@ export default function UsersData() {
             </CardTitle>
           </CardHeader>
           <CardContent className={'mx-auto'}>
-            <p className="text-2xl font-bold">10 000</p>
+            <p className="text-2xl font-bold">{totalLast30Days}</p>
           </CardContent>
           <CardFooter>
             <p className="text-sm text-gray-500">Updated xx minutes ago</p>
           </CardFooter>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Login Trend past 30 days</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <LoginTrendChart
+              data={Object.entries(totalLoginsByDate).map(([date, count]) => ({
+                date,
+                count,
+              }))}
+            />
+          </CardContent>
         </Card>
       </div>
       <div>
@@ -115,14 +158,14 @@ export default function UsersData() {
             <div className="relative mb-6">
               <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
               <Input
-                placeholder="Search users by name, email or role..."
+                placeholder="Search users by name or email..."
                 className="pl-10"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
             <div className="space-y-4">
-              {filteredUsers.map((user) => (
+              {displayedUsers.map((user) => (
                 <div
                   key={user.id}
                   className="hover:bg-muted/50 flex items-center justify-between rounded-lg border p-3 transition-colors"

@@ -13,6 +13,9 @@ export async function GET() {
       email: user.email,
       image: user.image,
       role: user.role,
+      lastActive: new Date(
+        Date.now() - Math.random() * 86400000 * 30
+      ).toISOString(),
       status: 'offline',
     }));
 

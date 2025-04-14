@@ -14,9 +14,6 @@ export async function GET() {
 
     const activity = allUsers.map((user) => ({
       id: user.id,
-      lastActive: new Date(
-        Date.now() - Math.random() * 86400000 * 30
-      ).toISOString(),
       loginStats: generateLoginStats(),
     }));
 
