@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -62,6 +63,11 @@ export default function UserModal({ open, onClose, onSubmit, user }: Props) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{user ? 'Edit User' : 'Add User'}</DialogTitle>
+          <DialogDescription>
+            {user
+              ? 'Edit the details of the selected user.'
+              : 'Add a new user to the system.'}
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
           <Input

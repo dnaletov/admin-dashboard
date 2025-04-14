@@ -31,8 +31,6 @@ export default function UsersData() {
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
-  console.log('TEST1:', editingUser);
-  console.log('TEST2:', modalOpen);
 
   const handleSave = (userData: Omit<User, 'id'>, id?: number) => {
     if (id) {
@@ -167,14 +165,7 @@ export default function UsersData() {
                     </Badge>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => {
-                            console.log('Dropdown triggered');
-                          }}
-                        >
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
                           <MoreHorizontal className="h-4 w-4" />
                           <span className="sr-only">Open menu</span>
                         </Button>
@@ -192,8 +183,11 @@ export default function UsersData() {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
-                            setEditingUser(user);
-                            setModalOpen(true);
+                            queueMicrotask(() => {
+                              // queueMicrotask() is used here to delay the state updates (setEditingUser and setModalOpen) until the next event loop tick.
+                              setEditingUser(user);
+                              setModalOpen(true);
+                            });
                           }}
                         >
                           Edit user
