@@ -12,12 +12,8 @@ export async function GET() {
       lastName: user.lastName,
       email: user.email,
       image: user.image,
-      role: 'user',
+      role: user.role,
       status: 'offline',
-      lastActive: new Date(
-        Date.now() - Math.random() * 86400000 * 30
-      ).toISOString(),
-      loginStats: generateLoginStats(),
     }));
 
     const allUsers = [...dummyUsers, ...mockUsers];
@@ -28,11 +24,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
-
-function generateLoginStats() {
-  return Array.from({ length: 30 }, (_, i) => ({
-    date: new Date(Date.now() - i * 86400000).toISOString().slice(0, 10),
-    count: Math.floor(Math.random() * 5),
-  })).reverse();
 }

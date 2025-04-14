@@ -26,9 +26,7 @@ export default function UserModal({ open, onClose, onSubmit, user }: Props) {
     email: '',
     role: 'user',
     status: 'offline',
-    lastActive: new Date().toISOString(),
     image: '',
-    loginStats: [],
   });
 
   useEffect(() => {
@@ -42,9 +40,7 @@ export default function UserModal({ open, onClose, onSubmit, user }: Props) {
         email: '',
         role: 'user',
         status: 'offline',
-        lastActive: new Date().toISOString(),
         image: '',
-        loginStats: [],
       });
     }
   }, [user]);

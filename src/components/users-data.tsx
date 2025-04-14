@@ -27,7 +27,7 @@ import { User } from '@/types/user';
 import UserModal from './user-modal';
 
 export default function UsersData() {
-  const { users, loading, addUser, updateUser /*deleteUser */ } = useUsers();
+  const { users, loading, addUser, updateUser, deleteUser } = useUsers();
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -191,6 +191,19 @@ export default function UsersData() {
                           }}
                         >
                           Edit user
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            if (
+                              confirm(
+                                `Are you sure you want to delete ${user.firstName}?`
+                              )
+                            ) {
+                              deleteUser(user.id);
+                            }
+                          }}
+                        >
+                          Delete user
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
