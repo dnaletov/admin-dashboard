@@ -1,9 +1,10 @@
 export type UserActivity = {
   id: number;
-  firstName: string;
-  lastName: string;
-  loginStats: {
+  loginHistory: {
+    id: number;
     date: string;
-    count: number;
+    device: string;
+    browser: string;
+    ip: string;
   }[];
 };

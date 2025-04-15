@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { useUsers } from '@/hooks/use-users';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User } from '@/types/user';
 import UserModal from './user-modal';
 import LoginTrendChart from './login-trend-chart';
@@ -34,6 +34,12 @@ export default function UsersData() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const { totalLast30Days, totalLoginsByDate } = useUserActivity();
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+
+  const handleDelete = (id: number) => {
+    deleteUser(id);
+    setLastUpdated(new Date());
+  };
 
   const handleSave = (userData: Omit<User, 'id'>, id?: number) => {
     if (id) {
@@ -41,6 +47,7 @@ export default function UsersData() {
     } else {
       addUser(userData);
     }
+    setLastUpdated(new Date());
   };
 
   const filteredUsers = users.filter((user) =>
@@ -77,6 +84,20 @@ export default function UsersData() {
   const displayedUsers =
     sortedUsers.length >= 10 ? sortedUsers.slice(0, 10) : sortedUsers;
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLastUpdated((prev) => new Date(prev));
+    }, 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getTimeAgo = (date: Date) => {
+    const diffMs = Date.now() - date.getTime();
+    const diffMinutes = Math.floor(diffMs / 60000);
+    return diffMinutes === 0 ? '0' : `${diffMinutes}`;
+  };
+
   if (loading) return <p className="mt-10 text-center">Loading users...</p>;
 
   return (
@@ -91,7 +112,9 @@ export default function UsersData() {
             <p className="text-2xl font-bold">{users.length}</p>
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-gray-500">Updated xx minutes ago</p>
+            <p className="text-sm text-gray-500">
+              Updated {getTimeAgo(lastUpdated)} minutes ago
+            </p>
           </CardFooter>
         </Card>
 
@@ -105,7 +128,9 @@ export default function UsersData() {
             <p className="text-2xl font-bold">56</p>
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-gray-500">Updated xx minutes ago</p>
+            <p className="text-sm text-gray-500">
+              Updated {getTimeAgo(lastUpdated)} minutes ago
+            </p>
           </CardFooter>
         </Card>
         <Card>
@@ -118,7 +143,9 @@ export default function UsersData() {
             <p className="text-2xl font-bold">{totalLast30Days}</p>
           </CardContent>
           <CardFooter>
-            <p className="text-sm text-gray-500">Updated xx minutes ago</p>
+            <p className="text-sm text-gray-500">
+              Updated {getTimeAgo(lastUpdated)} minutes ago
+            </p>
           </CardFooter>
         </Card>
       </div>
@@ -229,7 +256,7 @@ export default function UsersData() {
                                 `Are you sure you want to delete ${user.firstName}?`
                               )
                             ) {
-                              deleteUser(user.id);
+                              handleDelete(user.id);
                             }
                           }}
                         >
