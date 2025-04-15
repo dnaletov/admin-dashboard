@@ -22,18 +22,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { useUsers } from '@/hooks/use-users';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { User } from '@/types/user';
 import UserModal from './user-modal';
 import LoginTrendChart from './login-trend-chart';
 import { useUserActivity } from '@/hooks/use-user-activity';
 
-export default function UsersData() {
+const UsersData = () => {
   const { users, loading, addUser, updateUser, deleteUser } = useUsers();
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
-  const { totalLast30Days, totalLoginsByDate } = useUserActivity();
+  const { totalLast30Days, loginChartData } = useUserActivity();
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
   const handleDelete = (id: number) => {
@@ -272,14 +272,7 @@ export default function UsersData() {
                   <CardTitle>Login Trend past 30 days</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <LoginTrendChart
-                    data={Object.entries(totalLoginsByDate).map(
-                      ([date, count]) => ({
-                        date,
-                        count,
-                      })
-                    )}
-                  />
+                  <LoginTrendChart data={loginChartData} />
                 </CardContent>
               </Card>
             </div>
@@ -297,4 +290,6 @@ export default function UsersData() {
       />
     </div>
   );
-}
+};
+
+export default React.memo(UsersData);

@@ -19,7 +19,8 @@ export function useUserActivity(userId?: number) {
     (acc, entry) => {
       if (Array.isArray(entry.loginHistory)) {
         entry.loginHistory.forEach(({ date }) => {
-          acc[date] = (acc[date] || 0) + 1;
+          const day = new Date(date).toISOString().split('T')[0];
+          acc[day] = (acc[day] || 0) + 1;
         });
       }
       return acc;
@@ -27,16 +28,17 @@ export function useUserActivity(userId?: number) {
     {} as Record<string, number>
   );
 
+  const loginChartData = Object.entries(totalLoginsByDate)
+    .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime())
+    .map(([date, count]) => ({ date, count }));
+
   const totalLast30Days = Object.values(totalLoginsByDate).reduce(
     (sum, n) => sum + n,
     0
   );
-  console.log(userActivity);
-  console.log(totalLoginsByDate);
-  console.log(totalLast30Days);
   return {
     totalLast30Days,
-    totalLoginsByDate,
+    loginChartData,
     userActivity,
   };
 }

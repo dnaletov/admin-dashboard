@@ -31,11 +31,20 @@ function generateLoginHistory() {
   const browsers = ['Chrome', 'Safari', 'Firefox', 'Edge'];
   const ipBase = '192.168.';
 
-  return Array.from({ length: 5 }, (_, i) => ({
-    id: i + 1,
-    date: new Date(Date.now() - i * 86400000 * 2).toISOString(),
-    device: devices[Math.floor(Math.random() * devices.length)],
-    browser: browsers[Math.floor(Math.random() * browsers.length)],
-    ip: `${ipBase}${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`,
-  }));
+  const loginsCount = Math.floor(Math.random() * 10) + 1; // 1-10 логинов
+
+  const history = Array.from({ length: loginsCount }, () => {
+    const daysAgo = Math.floor(Math.random() * 30); // в пределах последних 30 дней
+    return {
+      id: Math.floor(Math.random() * 10000),
+      date: new Date(Date.now() - daysAgo * 86400000).toISOString(),
+      device: devices[Math.floor(Math.random() * devices.length)],
+      browser: browsers[Math.floor(Math.random() * browsers.length)],
+      ip: `${ipBase}${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`,
+    };
+  });
+
+  return history.sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
 }

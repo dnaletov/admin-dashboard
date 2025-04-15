@@ -23,8 +23,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useUserActivity } from '@/hooks/use-user-activity';
+import React from 'react';
 
-export default function UserDetails() {
+const UserDetails = () => {
   const params = useParams();
   const { users } = useUsers();
   const userId = Number(params.userId);
@@ -66,7 +67,7 @@ export default function UserDetails() {
   if (!user)
     return (
       <div className="text-muted-foreground p-4 text-center">
-        Loading detailes...
+        Loading details...
       </div>
     );
 
@@ -161,7 +162,7 @@ export default function UserDetails() {
                   {userActivity.map((login) => (
                     <TableRow key={login.id}>
                       <TableCell>{formatDate(new Date(login.date))}</TableCell>
-                      <TableCell>{formatDate(new Date(login.date))}</TableCell>
+                      <TableCell>{formatTime(new Date(login.date))}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           {getDeviceIcon(login.device)}
@@ -184,4 +185,6 @@ export default function UserDetails() {
       </Card>
     </div>
   );
-}
+};
+
+export default React.memo(UserDetails);
