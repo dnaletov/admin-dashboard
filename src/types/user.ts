@@ -7,4 +7,5 @@ export type User = {
   role: string;
   status: string;
   lastActive: string;
+  firstActive: string;
 };

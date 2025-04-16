@@ -10,6 +10,7 @@ export const mockUsers: User[] = [
     image: 'https://randomuser.me/api/portraits/women/81.jpg',
     status: 'online',
     lastActive: getLastActive(),
+    firstActive: getLastActive(),
   },
   {
     id: 102,
@@ -20,6 +21,7 @@ export const mockUsers: User[] = [
     image: 'https://randomuser.me/api/portraits/men/45.jpg',
     status: 'offline',
     lastActive: getLastActive(),
+    firstActive: getLastActive(),
   },
   {
     id: 103,
@@ -30,6 +32,7 @@ export const mockUsers: User[] = [
     image: 'https://randomuser.me/api/portraits/men/33.jpg',
     status: 'away',
     lastActive: getLastActive(),
+    firstActive: getLastActive(),
   },
 ];
 

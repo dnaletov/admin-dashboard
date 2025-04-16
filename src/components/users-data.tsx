@@ -35,6 +35,7 @@ const UsersData = () => {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const { totalLast30Days, loginChartData } = useUserActivity();
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [initialUserCount, setInitialUserCount] = useState<number | null>(null);
 
   const handleDelete = (id: number) => {
     deleteUser(id);
@@ -85,6 +86,17 @@ const UsersData = () => {
     sortedUsers.length >= 10 ? sortedUsers.slice(0, 10) : sortedUsers;
 
   useEffect(() => {
+    if (!loading && initialUserCount === null) {
+      setInitialUserCount(users.length);
+    }
+  }, [loading, users.length]);
+
+  const newUsersCount =
+    initialUserCount !== null && users.length > initialUserCount
+      ? users.length - initialUserCount
+      : 0;
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setLastUpdated((prev) => new Date(prev));
     }, 60 * 1000);
@@ -125,7 +137,7 @@ const UsersData = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className={'mx-auto'}>
-            <p className="text-2xl font-bold">56</p>
+            <p className="text-2xl font-bold">{newUsersCount}</p>
           </CardContent>
           <CardFooter>
             <p className="text-sm text-gray-500">

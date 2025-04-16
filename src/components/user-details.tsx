@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/table';
 import { useUserActivity } from '@/hooks/use-user-activity';
 import React from 'react';
+import LoginTrendChart from './login-trend-chart';
 
 const UserDetails = () => {
   const params = useParams();
@@ -65,6 +66,22 @@ const UserDetails = () => {
     }
   };
 
+  const userLoginChartData = userActivity.reduce(
+    (acc, login) => {
+      const date = new Date(login.date).toISOString().split('T')[0];
+      const existing = acc.find((entry) => entry.date === date);
+
+      if (existing) {
+        existing.count += 1;
+      } else {
+        acc.push({ date, count: 1 });
+      }
+
+      return acc;
+    },
+    [] as { date: string; count: number }[]
+  );
+
   if (!user)
     return (
       <div className="text-muted-foreground p-4 text-center">
@@ -100,6 +117,7 @@ const UserDetails = () => {
                   {user.status !== 'online' && (
                     <span className="text-muted-foreground flex items-center text-sm">
                       <Clock className="mr-1 h-3 w-3" />
+                      {formatDate(new Date(user.lastActive))},{' '}
                       {formatTime(new Date(user.lastActive))}
                     </span>
                   )}
@@ -108,7 +126,10 @@ const UserDetails = () => {
             </div>
             <div className="text-muted-foreground flex items-center space-x-2 text-sm">
               <CalendarDays className="h-4 w-4" />
-              <span>Member since {formatDate(new Date(2023, 5, 10))}</span>
+              <span>
+                Member since {formatDate(new Date(user.firstActive))},{' '}
+                {formatTime(new Date(user.firstActive))}
+              </span>
             </div>
           </div>
         </CardHeader>
@@ -183,6 +204,14 @@ const UserDetails = () => {
                 </TableBody>
               </Table>
             </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Login Trend past 30 days</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LoginTrendChart data={userLoginChartData} />
+              </CardContent>
+            </Card>
           </div>
         </CardContent>
       </Card>

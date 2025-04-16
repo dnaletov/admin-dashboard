@@ -16,6 +16,9 @@ export async function GET() {
       lastActive: new Date(
         Date.now() - Math.random() * 86400000 * 30
       ).toISOString(),
+      firstActive: new Date(
+        Date.now() - Math.random() * 86400000 * 30
+      ).toISOString(),
       status: 'offline',
     }));
 
