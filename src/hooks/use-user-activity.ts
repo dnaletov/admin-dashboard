@@ -36,9 +36,30 @@ export function useUserActivity(userId?: number) {
     (sum, n) => sum + n,
     0
   );
+
+  let userLast30Days = 0;
+  let userLast72Hours = 0;
+
+  if (userId) {
+    const now = new Date();
+    const past30d = new Date(now);
+    past30d.setDate(past30d.getDate() - 30);
+
+    const past72h = new Date(now);
+    past72h.setHours(past72h.getHours() - 72);
+
+    userActivity.forEach(({ date }) => {
+      const loginDate = new Date(date);
+      if (loginDate >= past30d) userLast30Days++;
+      if (loginDate >= past72h) userLast72Hours++;
+    });
+  }
+
   return {
     totalLast30Days,
     loginChartData,
     userActivity,
+    userLast30Days,
+    userLast72Hours,
   };
 }

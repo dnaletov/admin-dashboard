@@ -31,10 +31,10 @@ function generateLoginHistory() {
   const browsers = ['Chrome', 'Safari', 'Firefox', 'Edge'];
   const ipBase = '192.168.';
 
-  const loginsCount = Math.floor(Math.random() * 10) + 1; // 1-10 логинов
+  const loginsCount = Math.floor(Math.random() * 10) + 1;
 
   const history = Array.from({ length: loginsCount }, () => {
-    const daysAgo = Math.floor(Math.random() * 30); // в пределах последних 30 дней
+    const daysAgo = Math.floor(Math.random() * 30);
     return {
       id: Math.floor(Math.random() * 10000),
       date: new Date(Date.now() - daysAgo * 86400000).toISOString(),

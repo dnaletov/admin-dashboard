@@ -30,7 +30,8 @@ const UserDetails = () => {
   const { users } = useUsers();
   const userId = Number(params.userId);
   const user = users.find((u) => u.id === userId);
-  const { userActivity } = useUserActivity(userId);
+  const { userActivity, userLast30Days, userLast72Hours } =
+    useUserActivity(userId);
 
   // Helper function to format dates
   const formatDate = (date: Date) => {
@@ -121,7 +122,9 @@ const UserDetails = () => {
                     Past 72 hours
                   </span>
                   <div className="mt-1 flex items-baseline">
-                    <span className="text-3xl font-bold">0</span>
+                    <span className="text-3xl font-bold">
+                      {userLast72Hours}
+                    </span>
                     <span className="text-muted-foreground ml-2 text-sm">
                       logins
                     </span>
@@ -134,7 +137,7 @@ const UserDetails = () => {
                     Past 30 days
                   </span>
                   <div className="mt-1 flex items-baseline">
-                    <span className="text-3xl font-bold">0</span>
+                    <span className="text-3xl font-bold">{userLast30Days}</span>
                     <span className="text-muted-foreground ml-2 text-sm">
                       logins
                     </span>
