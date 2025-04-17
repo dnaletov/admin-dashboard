@@ -9,8 +9,8 @@ export const mockUsers: User[] = [
     role: 'admin',
     image: 'https://randomuser.me/api/portraits/women/81.jpg',
     status: 'online',
-    lastActive: getLastActive(),
-    firstActive: getLastActive(),
+    lastActive: getActiveDate(),
+    firstActive: getActiveDate(),
   },
   {
     id: 102,
@@ -20,8 +20,8 @@ export const mockUsers: User[] = [
     role: 'moderator',
     image: 'https://randomuser.me/api/portraits/men/45.jpg',
     status: 'offline',
-    lastActive: getLastActive(),
-    firstActive: getLastActive(),
+    lastActive: getActiveDate(),
+    firstActive: getActiveDate(),
   },
   {
     id: 103,
@@ -31,11 +31,33 @@ export const mockUsers: User[] = [
     role: 'user',
     image: 'https://randomuser.me/api/portraits/men/33.jpg',
     status: 'away',
-    lastActive: getLastActive(),
-    firstActive: getLastActive(),
+    lastActive: getActiveDate(),
+    firstActive: getActiveDate(),
+  },
+  {
+    id: 999,
+    firstName: 'Test',
+    lastName: 'Suspicious',
+    email: 'suspicious@example.com',
+    role: 'user',
+    image: 'https://randomuser.me/api/portraits/men/32.jpg',
+    status: 'away',
+    lastActive: getActiveDate(),
+    firstActive: getActiveDate(),
+  },
+  {
+    id: 1000,
+    firstName: 'Suspicious',
+    lastName: 'Test',
+    email: 'suspicious@example.com',
+    role: 'user',
+    image: 'https://randomuser.me/api/portraits/men/31.jpg',
+    status: 'away',
+    lastActive: getActiveDate(),
+    firstActive: getActiveDate(),
   },
 ];
 
-function getLastActive() {
+function getActiveDate() {
   return new Date(Date.now() - Math.random() * 86400000 * 30).toISOString();
 }

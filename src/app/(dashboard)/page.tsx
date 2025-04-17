@@ -7,6 +7,10 @@ import { authOptions } from '@/lib/auth';
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
+  const res = await fetch('http://localhost:3000/api/users', {
+    cache: 'no-store',
+  });
+  const users = await res.json();
 
   return (
     <div>
@@ -24,7 +28,7 @@ export default async function Home() {
             <CardContent className={'mx-auto'}>
               {/*Display the current count of users from api*/}
               <div className={'flex flex-col items-center'}>
-                <span className={'text-4xl'}>32</span>
+                <span className={'text-4xl'}>{users.length}</span>
                 <span className={'text-sm'}>users</span>
               </div>
             </CardContent>

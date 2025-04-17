@@ -27,6 +27,7 @@ import { User } from '@/types/user';
 import UserModal from './user-modal';
 import LoginTrendChart from './login-trend-chart';
 import { useUserActivity } from '@/hooks/use-user-activity';
+import { useSuspiciousUsers } from '@/hooks/use-suspicious-users';
 
 const UsersData = () => {
   const { users, loading, addUser, updateUser, deleteUser } = useUsers();
@@ -36,6 +37,7 @@ const UsersData = () => {
   const { totalLast30Days, loginChartData } = useUserActivity();
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [initialUserCount, setInitialUserCount] = useState<number | null>(null);
+  const suspiciousUsers = useSuspiciousUsers();
 
   const handleDelete = (id: number) => {
     deleteUser(id);
@@ -279,6 +281,55 @@ const UsersData = () => {
                   </div>
                 </div>
               ))}
+              <Card className="mx-auto mb-6 w-full max-w-4xl">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold">
+                    Suspicious Users
+                  </CardTitle>
+                  <CardDescription>
+                    Detected unusual login patterns
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {suspiciousUsers.length === 0 ? (
+                    <p className="text-muted-foreground">
+                      No suspicious activity detected.
+                    </p>
+                  ) : (
+                    suspiciousUsers.map((s) => {
+                      const user = users.find((u) => u.id === s.id);
+                      if (!user) return null;
+
+                      return (
+                        <div
+                          key={s.id}
+                          className="flex items-center justify-between rounded-md border p-3"
+                        >
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={user.image}
+                              alt={user.firstName}
+                              className="h-10 w-10 rounded-full"
+                            />
+                            <div>
+                              <Link
+                                href={`/users/${user.id}`}
+                                className="text-primary font-medium hover:underline"
+                              >
+                                {user.firstName} {user.lastName}
+                              </Link>
+                              <p className="text-muted-foreground text-sm">
+                                {user.email}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="text-sm text-red-500">{s.reason}</p>
+                        </div>
+                      );
+                    })
+                  )}
+                </CardContent>
+              </Card>
               <Card>
                 <CardHeader>
                   <CardTitle>Login Trend past 30 days</CardTitle>
