@@ -26,7 +26,6 @@ export default async function Home() {
               <CardTitle className={'mx-auto'}>We currently managing</CardTitle>
             </CardHeader>
             <CardContent className={'mx-auto'}>
-              {/*Display the current count of users from api*/}
               <div className={'flex flex-col items-center'}>
                 <span className={'text-4xl'}>{users.length}</span>
                 <span className={'text-sm'}>users</span>

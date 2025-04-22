@@ -24,8 +24,8 @@ Make sure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone git@gitlab.com:procorp-public/frontend-test.git
-   cd frontend-test
+   git clone https://github.com/dnaletov/admin-dashboard
+   cd admin-dashboard
    ```
 
 2. Install dependencies:
@@ -33,6 +33,19 @@ Make sure you have the following installed:
    ```bash
    yarn install
    ```
+
+### Environment Variables
+
+To log in to the dashboard, you need to provide login credentials (email and password).
+
+An example file .env.example is included in the root of the repository.
+This file contains credentials for logging in as an admin user.
+
+Create a copy of .env.example and rename it to .env:
+
+Update the values if needed. The default file includes:
+
+These credentials will allow you to log in to the dashboard locally.
 
 ### Development
 
@@ -77,4 +90,5 @@ yarn start
 - Clean and consistent codebase with ESLint and Prettier.
 
 ---
+
 Created with ❤️ using Next.js

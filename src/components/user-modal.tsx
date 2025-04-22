@@ -28,6 +28,7 @@ export default function UserModal({ open, onClose, onSubmit, user }: Props) {
     status: 'offline',
     image: '',
     lastActive: '',
+    firstActive: '',
   });
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export default function UserModal({ open, onClose, onSubmit, user }: Props) {
         status: 'offline',
         image: '',
         lastActive: '',
+        firstActive: '',
       });
     }
   }, [user]);

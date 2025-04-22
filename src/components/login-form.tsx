@@ -27,26 +27,19 @@ export default function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setErrorMessage(''); // Reset the error message on every attempt
+    setErrorMessage('');
 
-    // Here you would typically handle authentication
-    // For example: await signIn(email, password)
-
-    // Call NextAuth's signIn function
     const res = await signIn('credentials', {
       redirect: false,
       email,
       password,
     });
 
-    // Simulate API call
-
     setIsLoading(false);
 
     if (res?.error) {
       setErrorMessage('Invalid email or password, please try again.');
     } else {
-      // Redirect on successful login
       router.push(STATIC_PAGES.home);
     }
   };
